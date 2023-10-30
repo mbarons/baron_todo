@@ -9,6 +9,7 @@ import com.baron.Baron.TodoList.mapper.DozerMapper;
 import com.baron.Baron.TodoList.models.User;
 import com.baron.Baron.TodoList.repositories.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository repository;
+    private final PasswordEncoder passwordEncoder;
 
     public UserDto findById(Long id) {
         User user = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
@@ -31,6 +33,8 @@ public class UserService {
     public UserDto create(CreateUserDto createUserDto) {
         User user = DozerMapper.parseObject(createUserDto, User.class);
         user.setEnabled(true);
+        String hashPwd = passwordEncoder.encode(createUserDto.getPassword());
+        user.setPassword(hashPwd);
         try {
             repository.save(user);
         } catch (Exception ex) {
