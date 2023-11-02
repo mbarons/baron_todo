@@ -37,8 +37,8 @@ public class ProjectSecurityConfig {
                 }))
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/users/register"))
                 .authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/users/register").permitAll()
-                                .requestMatchers("/todos/{username}").authenticated())
+                        .requestMatchers("/users/register").permitAll()
+                        .requestMatchers("/todos/{username}").authenticated())
                 .formLogin(Customizer.withDefaults())
                 .httpBasic(Customizer.withDefaults());
         return http.build();
