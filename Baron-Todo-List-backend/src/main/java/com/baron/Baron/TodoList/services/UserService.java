@@ -21,6 +21,11 @@ public class UserService {
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
 
+    public UserDto findByUsername(String username) {
+        User user = repository.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        return DozerMapper.parseObject(user, UserDto.class);
+    }
+
     public UserDto findById(Long id) {
         User user = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         return DozerMapper.parseObject(user, UserDto.class);

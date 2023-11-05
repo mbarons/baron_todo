@@ -6,6 +6,7 @@ import com.baron.Baron.TodoList.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +20,9 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserDto> findUserById(@PathVariable("id") Long id) {
-        UserDto userDto = userService.findById(id);
+    @GetMapping("/my_profile")
+    public ResponseEntity<UserDto> findUserById(Authentication authentication) {
+        UserDto userDto = userService.findByUsername(authentication.getName());
         return ResponseEntity.ok(userDto);
     }
 
